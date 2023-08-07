@@ -28,16 +28,13 @@
 # Ovidiu Calbajos <ovidiu.calbajos@gmail.com>
 #
 class msuac (
-  $enabled = true,
-  $prompt  = 'consentprompt',
+  Boolean $enabled = true,
+  Enum['consentprompt', 'authprompt', 'disabled'] $prompt = 'consentprompt',
 ) {
 
   if $::operatingsystem != 'Windows' {
     fail ("Class[msuac] can only be applied to Windows systems. It cannot be used on \"${::operatingsystem}.\"")
   }
-
-  validate_bool($enabled)
-  validate_re($prompt, '^(consentprompt|authprompt|disabled)$', "Valid values for \$promt are 'consentpromt', 'authprompt', or 'disabled'. Received ${prompt}")
 
   $prompt_data = $prompt ? {
     'disabled'      => '0x00000000',
